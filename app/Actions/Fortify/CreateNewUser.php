@@ -35,5 +35,7 @@ class CreateNewUser implements CreatesNewUsers
             'current_team_id' => $input['current_team_id'] ?? null,
             'role' => $input['role'],
         ]);
+        $user->assignRole($input['role']);
+        return $user;
     }
 }

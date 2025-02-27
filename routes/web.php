@@ -25,3 +25,7 @@ Route::middleware([
         return view('dashboard');
     })->name('dashboard');
 });
+Route::get('/home', [HomeController::class, 'index'])->name('home');
+Route::get('/chauffeur/dashboard', [ChauffeurController::class, 'index'])
+    ->name('chauffeur.dashboard')
+    ->middleware('role:chauffeur');
