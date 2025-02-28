@@ -16,16 +16,36 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+// Route::middleware([
+//     'auth:sanctum',
+//     config('jetstream.auth_session'),
+//     'verified',
+// ])->group(function () {
+//     Route::get('/dashboard', function () {
+//         return view('dashboard');
+//     })->name('dashboard');
+// });
+// Route::get('/home', [HomeController::class, 'index'])->name('home');
+// Route::get('/chauffeur/dashboard', [ChauffeurController::class, 'index'])
+//     ->name('chauffeur.dashboard')
+//     ->middleware('role:chauffeur');
 Route::middleware([
     'auth:sanctum',
     config('jetstream.auth_session'),
     'verified',
 ])->group(function () {
+    // المسار للمستخدمين العاديين (الركاب)
     Route::get('/dashboard', function () {
         return view('dashboard');
     })->name('dashboard');
+    
+    // المسار للسائقين
+    Route::get('/dashboard', [ChauffeurController::class, 'index'])
+        ->name('chauffeur.dashboard')
+        ->middleware('role:chauffeur');  // التحقق من دور السائق
 });
-Route::get('/home', [HomeController::class, 'index'])->name('home');
-Route::get('/chauffeur/dashboard', [ChauffeurController::class, 'index'])
-    ->name('chauffeur.dashboard')
-    ->middleware('role:chauffeur');
+// Route::get('/dashboard', function () {
+//     return view('dashboard');
+// })->middleware(['auth:sanctum', 'verified'])->name('dashboard');
+// Route::get('/dashboard', function () {
+//     return view('dashboard');    

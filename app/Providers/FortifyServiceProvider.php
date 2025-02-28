@@ -13,7 +13,6 @@ use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
 use Laravel\Fortify\Fortify;
 
-
 class FortifyServiceProvider extends ServiceProvider
 {
     /**
@@ -43,28 +42,5 @@ class FortifyServiceProvider extends ServiceProvider
         RateLimiter::for('two-factor', function (Request $request) {
             return Limit::perMinute(5)->by($request->session()->get('login.id'));
         });
-
-        Fortify::authenticateUsing(function ($request) {
-            $user = User::where('email', $request->email)->first();
-    
-            if ($user && Hash::check($request->password, $user->password)) {
-                return $user;
-            }
-        });
-            
-        Fortify::authenticateUsing(function ($request) {
-            $user = Auth::attempt([
-                'email' => $request->email,
-                'password' => $request->password,
-            ]);
-        
-            if ($user) {
-                return $user;
-            }
-        
-            return null;
-        });
-        
-        
     }
 }
